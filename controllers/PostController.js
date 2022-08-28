@@ -3,9 +3,9 @@ const Post = require("../models/post");
 const getAllPosts = async (req, res) => {
   try {
     const allPosts = await Post.find();
-    res.json(allPosts);
+    res.status(200).json(allPosts);
   } catch (err) {
-    res.send("Error : " + err);
+    res.status(500).send("Error : " + err);
   }
 };
 
@@ -13,12 +13,12 @@ const getPost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (post) {
-      res.json(post);
+      res.status(200).json(post);
     } else {
-      res.send("No post for this id");
+      res.status(400).send("No post for this id");
     }
   } catch (err) {
-    res.send("Error : " + err);
+    res.status(500).send("Error : " + err);
   }
 };
 
@@ -32,9 +32,9 @@ const savePost = async (req, res) => {
   });
   try {
     const p = await post.save();
-    res.json(p);
+    res.status(200).json(p);
   } catch (err) {
-    res.send("Error : " + err);
+    res.status(500).send("Error : " + err);
   }
 };
 
@@ -48,12 +48,12 @@ const updatePost = async (req, res) => {
       post.title = req.body.title;
       post.body = req.body.body;
       const response = await post.save();
-      res.json(response);
+      res.status(200).json(response);
     } else {
-      res.send("Invalid Post id...!");
+      res.status(400).send("Invalid Post id...!");
     }
   } catch (err) {
-    res.send("Err: " + err);
+    res.status(500).send("Error : " + err);
   }
 };
 
@@ -61,9 +61,9 @@ const deletePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     const response = await post.remove();
-    res.json(response);
+    res.status(200).json(response);
   } catch (err) {
-    res.send("Error : " + err);
+    res.status(500).send("Error : " + err);
   }
 };
 

@@ -4,9 +4,9 @@ const Post = require("../models/post");
 const getAllUsers = async (req, res) => {
   try {
     const allUsers = await User.find();
-    res.json(allUsers);
+    res.status(200).json(allUsers);
   } catch (err) {
-    res.send("Error : " + err);
+    res.status(500).send("Error : " + err);
   }
 };
 
@@ -19,9 +19,9 @@ const getUser = async (req, res) => {
         userDetails: user,
         postsDetails: posts,
       };
-      res.json(u);
+      res.status(200).json(u);
     } else {
-      res.send("No user for this id");
+      res.status(400).send("No user for this id");
     }
   } catch (err) {
     res.status(500).send("Error : " + err);
@@ -36,12 +36,12 @@ const loginUser = async (req, res) => {
     if (!(u.length === 0)) {
       const tempPass = u[0].password;
       if (password === tempPass) {
-        res.send("Login Success...!");
+        res.status(200).send("Login Success...!");
       } else {
-        res.send("Wrong Password...!");
+        res.status(400).send("Wrong Password...!");
       }
     } else {
-      res.send("Invalid email...!");
+      res.status(400).send("Invalid email...!");
     }
   } catch (err) {
     res.status(500).send("Error : " + err);
@@ -63,9 +63,9 @@ const saveUser = async (req, res) => {
     const u = await User.find({ email: email });
     if (u.length === 0) {
       const u1 = await user.save();
-      res.json(u1);
+      res.status(200).json(u1);
     } else {
-      res.send("User already Exist");
+      res.status(400).send("User already Exist");
     }
   } catch (err) {
     res.status(500).send("Error : " + err);
@@ -84,9 +84,9 @@ const updateUser = async (req, res) => {
       user.email = req.body.email;
       user.password = req.body.password;
       const response = await user.save();
-      res.json(response);
+      res.status(200).json(response);
     } else {
-      res.send("Invalid User id...!");
+      res.status(400).send("Invalid User id...!");
     }
   } catch (err) {
     res.status(500).send("Error : " + err);
@@ -96,7 +96,7 @@ const deleteUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     const response = await user.remove();
-    res.json(response);
+    res.status(200).json(response);
   } catch (err) {
     res.status(500).send("Error : " + err);
   }
