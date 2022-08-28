@@ -4,10 +4,10 @@ const app = express();
 
 app.use(express.json());
 
-const usersRouter = require("./routes/users");
+const usersRouter = require("./routes/UsersRoute");
 app.use("/user", usersRouter);
 
-const postsRouter = require("./routes/posts");
+const postsRouter = require("./routes/PostsRoute");
 app.use("/post", postsRouter);
 
 const url = "mongodb://127.0.0.1/facebookCloneApp";
