@@ -6,18 +6,18 @@ const postSchema=new mongoose.Schema({
         required:true
     },
     createdTime:{
-        type:Date,
+        type:String,
         required:true
     },
     lastUpdatedTime:{
-        type:Date,
+        type:String,
         required:true
     },
     title:{
         type:String,
         required:true
     },
-    contactNumber:{
+    body:{
         type:String,
         required:true
     }

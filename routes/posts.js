@@ -3,16 +3,70 @@ const router = express.Router();
 const Post = require("../models/post");
 
 router.get("/", async (req, res) => {
-  const date =new Date().toLocaleDateString();
-  const time =new Date().toLocaleTimeString();
+  try {
+    const allPosts = await Post.find();
+    res.json(allPosts);
+  } catch (err) {
+    res.send("Error : " + err);
+  }
+});
 
-    try {
-        const posts = await Post.find();
-        // res.send(" GET Request");
-        res.send(date+" "+time);
-      } catch (err) {
-        res.send("Error " + err);
-      }
+router.get("/:id", async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (post) {
+      res.json(post);
+    } else {
+      res.send("No post for this id");
+    }
+  } catch (err) {
+    res.send("Error : " + err);
+  }
+});
+
+router.post("/", async (req, res) => {
+  const post = new Post({
+    userId: req.body.userId,
+    createdTime: req.body.createdTime,
+    lastUpdatedTime: req.body.lastUpdatedTime,
+    title: req.body.title,
+    body: req.body.body,
+  });
+  try {
+    const p = await post.save();
+    res.json(p);
+  } catch (err) {
+    res.send("Error : " + err);
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    const response = await post.remove();
+    res.json(response);
+  } catch (err) {
+    res.send("Error : " + err);
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (post) {
+      post.userId = req.body.userId;
+      post.createdTime = post.createdTime;
+      post.lastUpdatedTime = req.body.lastUpdatedTime;
+      post.title = req.body.title;
+      post.body = req.body.body;
+      const response = await post.save();
+      res.json(response);
+    } else {
+      res.send("Invalid Post id...!");
+    }
+  } catch (err) {
+    res.send("Err: " + err);
+  }
 });
 
 module.exports = router;
